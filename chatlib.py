@@ -3,8 +3,21 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import *
 import time, datetime
 import platform
+import logging
 
 sysstr = platform.system()
+
+logger = logging.getLogger('wechat')
+
+logging.basicConfig(level=logging.INFO, 
+					format='[%(asctime)s] %(message)s',
+					datefmt='%d %b %Y %H:%M:%S',
+					filename='log.txt',
+					filemode='w')
+
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+logger.addHandler(console)
 
 class chater:
 	def __init__(self):
@@ -14,7 +27,7 @@ class chater:
 		elif sysstr == 'Linux':
 			self.driver = webdriver.PhantomJS()
 		else:
-			print("I don't know how to use other systems")
+			logger.warning("I don't know how to use other systems")
 			exit()
 		self.login()
 
@@ -30,11 +43,11 @@ class chater:
 	def login(self):	
 		self.driver.get(self.url)
 		img = self.findElement('img[class="img"]')
-		print(img.get_attribute('src'))
+		logger.info(img.get_attribute('src'))
 		if not self.findElement('span[class="nickname_text ng-binding"]', cnt=100):
-			print('login failed')
+			logger.error('login failed')
 			exit()
-		print('login success')
+		logger.info('login success')
 
 	def getTalkingList(self):
 		return self.driver.find_elements_by_css_selector('span[class="nickname_text ng-binding"]')

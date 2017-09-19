@@ -1,6 +1,7 @@
 from chatlib import *
 
 c = chater()
+logger = logging.getLogger('wechat')
 
 f = open('birthtab.txt')
 for row in f.readlines():
@@ -11,7 +12,7 @@ f.close()
 while True:
 	tomorrow = datetime.datetime.replace(datetime.datetime.now() + datetime.timedelta(days=1), hour=0, minute=0, second=0)
 	delta = tomorrow - datetime.datetime.now() + datetime.timedelta(seconds=5)
-	print('sleep time:', delta)
+	logger.info('sleep time:'+str(delta))
 	time.sleep(delta.total_seconds())
 	f = open('birthtab.txt')
 	for row in f.readlines():
